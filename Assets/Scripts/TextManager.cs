@@ -65,12 +65,17 @@ public class TextManager : MonoBehaviour
         //Display token balances
         string chain = "ethereum";
         string network = "goerli";
-        string contract = "0x1f6f34E708A154F7512aDdFAD7e24812b86a4579";
+        string contract = "0x562240e1228b7905208FAE11d313F03c99371110";
         string account = PlayerPrefs.GetString("Account");
         BigInteger balanceOf = await ERC20.BalanceOf(chain, network, contract, account);
 
         BigInteger weiValue = 1000000000000000000;
         int balance = (int)(balanceOf / weiValue);
         tokenBalance.text = "Gold Token Balance: " + balance.ToString();
+    }
+
+    public void OpenMarketplace()
+    {
+        Application.OpenURL("http://unity3d.com/");
     }
 }
