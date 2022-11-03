@@ -76,6 +76,6 @@ public class TextManager : MonoBehaviour
 
     public void OpenMarketplace()
     {
-        Application.OpenURL("http://unity3d.com/");
+        Application.OpenURL("https://jelly-marketplace.vercel.app/");
     }
 }
