@@ -19,7 +19,7 @@ public class CoinSpawn : MonoBehaviour
     void Update()
     {
         timeToNextSpawn -= Time.deltaTime;
-        if (timeToNextSpawn <= 0.0f)
+        if (timeToNextSpawn <= 0.0f && TextManager.instance.modalOpen == false)
         {
             Spawn();
             timeToNextSpawn = timeBetweenSpawns;

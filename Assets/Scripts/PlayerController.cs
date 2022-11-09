@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,17 +34,25 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        moveInput = Input.GetAxis("Horizontal");
-        jellyRB.velocity = new Vector2(moveInput * speed, jellyRB.velocity.y);
-
-        jumpInput = Input.GetAxis("Vertical");
-        if (jumpInput > 0 && timesJumped < jumpsAllowed && prevJumpInput == 0)
+        if (TextManager.instance.modalOpen == false)
         {
-            jellyRB.velocity = new Vector2(jellyRB.velocity.x, jumpForce);
-            timesJumped++;
-        }
+            moveInput = Input.GetAxis("Horizontal");
+            jellyRB.velocity =
+                new Vector2(moveInput * speed, jellyRB.velocity.y);
 
-        prevJumpInput = jumpInput;
+            jumpInput = Input.GetAxis("Vertical");
+            if (
+                jumpInput > 0 &&
+                timesJumped < jumpsAllowed &&
+                prevJumpInput == 0
+            )
+            {
+                jellyRB.velocity = new Vector2(jellyRB.velocity.x, jumpForce);
+                timesJumped++;
+            }
+
+            prevJumpInput = jumpInput;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other)
