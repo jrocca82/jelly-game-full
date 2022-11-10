@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D jellyRB;
 
     //Constants
-    public float speed = 5.0f;
+    public float speed = 2.0f;
 
-    public float jumpForce = 8.0f;
+    public float jumpForce = 3.0f;
 
     public float jumpsAllowed = 2.0f;
 
@@ -25,8 +25,14 @@ public class PlayerController : MonoBehaviour
 
     private float timesJumped;
 
+    public static PlayerController playerInstance;
+
     void Start()
     {
+        if (playerInstance == null)
+        {
+            playerInstance = this;
+        }
         jellyRB = GetComponent<Rigidbody2D>();
         timesJumped = 0.0f;
         prevJumpInput = 0.0f;

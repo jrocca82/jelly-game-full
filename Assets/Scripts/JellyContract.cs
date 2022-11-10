@@ -5,15 +5,15 @@ using System.Numerics;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro;
+using Newtonsoft.Json;
+using NFTResponse;
 
 public class JellyContract : MonoBehaviour
 {
-    public class Response
-    {
-        public string image;
-    }
 
     public GameObject jellySprite;
+    public TextMeshProUGUI errorMessage;
 
     public Sprite[] spriteArray;
 
@@ -39,28 +39,30 @@ public class JellyContract : MonoBehaviour
         if (ownerOf.ToLower() == userAddress.ToLower())
         {
             string uri = await ERC721.URI(chain, network, contract, tokenId);
+            print(uri);
             UnityWebRequest webRequest = UnityWebRequest.Get(uri);
             await webRequest.SendWebRequest();
-            Response data =
-                JsonUtility
-                    .FromJson<Response>(System
-                        .Text
-                        .Encoding
-                        .UTF8
-                        .GetString(webRequest.downloadHandler.data));
+           RootGetNFT data =
+                    JsonConvert.DeserializeObject<RootGetNFT>(
+                        System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data)); 
+
+            print("SPEED " + data.attributes[0].value);
+            print("HEIGHT " + data.attributes[1].value);
+
             string imageUri = data.image;
-            print (imageUri);
             string pngString = (imageUri.Substring(imageUri.Length - 5)).Substring(0, 1);
-            print (pngString);
             int spriteIndex = Convert.ToInt32(pngString);
-            print (spriteIndex);
+            PlayerController.playerInstance.speed = 3.0f * data.attributes[0].value;
+            PlayerController.playerInstance.jumpForce = 4.0f * data.attributes[1].value;
+            print("Speed " + PlayerController.playerInstance.speed);
+            print("Jump Height: " + PlayerController.playerInstance.jumpForce);
             SpriteRenderer spriteRenderer = jellySprite.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = spriteArray[spriteIndex - 1];
             TextManager.instance.ExitModal();
         }
         else
         {
-            print("Error: this is not your token");
+            errorMessage.text = "Error: this is not your token";
         }
     }
 }
