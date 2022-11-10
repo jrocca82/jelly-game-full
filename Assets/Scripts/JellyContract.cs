@@ -23,7 +23,12 @@ public class JellyContract : MonoBehaviour
 
     string network = "goerli";
 
-    string tokenId = "3";
+    private string tokenId;
+
+    public void GetUserInput(string userInput)
+    {
+        tokenId = userInput;
+    }
 
     public async void FetchJelly()
     {
