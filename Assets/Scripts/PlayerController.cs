@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D jellyRB;
 
     //Constants
-    public float speed = 2.0f;
+    public float speed = 3.0f;
 
-    public float jumpForce = 3.0f;
+    public float jumpForce = 4.0f;
 
     public float jumpsAllowed = 2.0f;
 

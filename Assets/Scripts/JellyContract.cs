@@ -16,6 +16,7 @@ public class JellyContract : MonoBehaviour
     public TextMeshProUGUI errorMessage;
 
     public Sprite[] spriteArray;
+    public GameObject useJellyButton;
 
     string contract = "0xB799B360F537Fe5e397Fa1bBcE1529AD6031544d";
 
@@ -25,6 +26,8 @@ public class JellyContract : MonoBehaviour
 
     private string tokenId;
 
+    public bool isLoading = false;
+
     public void GetUserInput(string userInput)
     {
         tokenId = userInput;
@@ -32,6 +35,8 @@ public class JellyContract : MonoBehaviour
 
     public async void FetchJelly()
     {
+        isLoading = true;
+        useJellyButton.SetActive(false);
         string userAddress = PlayerPrefs.GetString("Account");
         string ownerOf =
             await ERC721.OwnerOf(chain, network, contract, tokenId);
@@ -52,8 +57,8 @@ public class JellyContract : MonoBehaviour
             string imageUri = data.image;
             string pngString = (imageUri.Substring(imageUri.Length - 5)).Substring(0, 1);
             int spriteIndex = Convert.ToInt32(pngString);
-            PlayerController.playerInstance.speed = 3.0f * data.attributes[0].value;
-            PlayerController.playerInstance.jumpForce = 4.0f * data.attributes[1].value;
+            PlayerController.playerInstance.speed = 4.0f * data.attributes[0].value;
+            PlayerController.playerInstance.jumpForce = 5.0f * data.attributes[1].value;
             print("Speed " + PlayerController.playerInstance.speed);
             print("Jump Height: " + PlayerController.playerInstance.jumpForce);
             SpriteRenderer spriteRenderer = jellySprite.GetComponent<SpriteRenderer>();
@@ -64,5 +69,7 @@ public class JellyContract : MonoBehaviour
         {
             errorMessage.text = "Error: this is not your token";
         }
+        useJellyButton.SetActive(true);
+        isLoading = false;
     }
 }
